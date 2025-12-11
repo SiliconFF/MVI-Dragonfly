@@ -248,6 +248,7 @@ class FrameGrabber:
             self.cap = cv2.VideoCapture(src, backend)
             if not self.cap.isOpened():
                 raise IOError(f"Failed to open video source: {src}")
+            self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
             self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
             self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
             self.cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
@@ -352,7 +353,7 @@ def capture_and_upload():
             logger.error(f"Camera recovery failed after retries: {e}")
             return  # Don't crash the script
     
-    frame = brighten_frame(frame, gamma)
+    #frame = brighten_frame(frame, gamma)
     logger.info(f"Frame captured - shape: {frame.shape}")
     try:
         upload_frame_in_memory(frame, device_endpoint)
