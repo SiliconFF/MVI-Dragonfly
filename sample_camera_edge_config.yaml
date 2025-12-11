@@ -6,7 +6,7 @@ mvi-password: "your_password"
 
 
 #MQTT Config
-mqtt-broker: "BrockerDomain" #Could be the same as MVI edge domain if you are using on board broaker
+mqtt-broker: "BrokerDomain" #Could be the same as MVI edge domain if you are using on board broaker
 mqtt-port: 8883 #Use 8883 for TLS, 1883 for non-TLS
 mqtt-tls-required: True
 mqtt-tls-file-name: "yourcertificatefile.crt"
