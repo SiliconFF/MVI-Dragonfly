@@ -35,7 +35,7 @@
     <img src="images/logo.png" alt="Logo" width="200" height="200">
   </a>
 
-<h3 align="center">MVI Dragonfly</h3>
+<h3 align="center">MVI-Dragonfly</h3>
 
   <p align="center">
     Turn any computer into a lightweight edge camera that can upload directly to an MVI Edge device 
@@ -80,7 +80,10 @@
   </ol>
 </details>
 
+## Disclaimer
+*MVI is a trademark of International Business Machines Corporation.*
 
+MVI-Dragonfly is an independent open-source project and is not affiliated with, endorsed by, or supported by IBM.
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
