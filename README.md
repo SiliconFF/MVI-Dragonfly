@@ -87,10 +87,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Here's a blank template to get started. To avoid retyping too much info, do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`, `project_license`
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 ### Built With
@@ -153,11 +150,14 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 <!-- ROADMAP -->
 ## Roadmap
+- [ ] Add YAML schema 
+- [ ] Verify functionality with RPI CSI modules
+- [ ] Allow multiple devices to be set as a target
+    - [ ] Devices can be linked to different trigger MQTT topics for more comprehensive coverage   
+- [ ] Develop a supervisor webserver for management and config changes
+- [ ] Support for reading from GigE cameras
+- [ ] Prebuilt RPI install script to automatically configure a raspberry pi to be deployed
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
 
 See the [open issues](https://github.com/SiliconFF/EdgeCamera_MVIUpload/issues) for a full list of proposed features (and known issues).
 
