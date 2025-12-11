@@ -46,7 +46,7 @@ logging.basicConfig(
     format='[%(asctime)s] [%(levelname)s] %(message)s',
     handlers=[
         logging.StreamHandler(),
-        RotatingFileHandler('my_app.log', maxBytes=1024 * 1024 * 5, backupCount=1) # 5 MB max size, keep 5 backups
+        RotatingFileHandler('uploader.log', maxBytes=1024 * 1024 * 5, backupCount=1) # 5 MB max size, keep 5 backups
     ]
 )
 logger = logging.getLogger(__name__)
