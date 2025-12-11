@@ -12,6 +12,7 @@ import os
 import sys
 import urllib3
 import logging
+from logging.handlers import RotatingFileHandler
 import signal
 import tenacity
 import platform
@@ -44,8 +45,8 @@ logging.basicConfig(
     level=logging.INFO,
     format='[%(asctime)s] [%(levelname)s] %(message)s',
     handlers=[
-        logging.FileHandler(log_path, mode='a'),
-        logging.StreamHandler()
+        logging.StreamHandler(),
+        RotatingFileHandler('my_app.log', maxBytes=1024 * 1024 * 5, backupCount=1) # 5 MB max size, keep 5 backups
     ]
 )
 logger = logging.getLogger(__name__)
