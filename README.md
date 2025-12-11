@@ -182,7 +182,7 @@ Don't forget to give the project a star! Thanks again!
 ### Top contributors:
 
 <a href="https://github.com/SiliconFF/EdgeCamera_MVIUpload/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=github_username/repo_name" alt="contrib.rocks image" />
+  <img src="https://contrib.rocks/image?repo=SiliconFF/EdgeCamera_MVIUpload" alt="contrib.rocks image" />
 </a>
 
 
