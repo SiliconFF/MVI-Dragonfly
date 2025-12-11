@@ -87,6 +87,17 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
+For some backstory on this project. I have been implementing applications in assembly processes that use IBM MVI Edge to run quality inspection and object detection models. 
+The single biggest hurdle that was encountered was the syncronizaiton of the time of trigger and the time of the RTSP frame that was captured. To more clearly layout the issue 
+that was encounted please see the flow chart below:
+
+[Chart to be added later]
+
+
+This issue gave me the idea to implement an interface to upload photos to "Image Folder" devices on the MVI Edge. This has been proven to vastly improve the time sync from sometimes 
+being off by upwards of 4s to being within ~200ms. The main design goal is to give the integrators of MVI Edge more flexibility with what cameras they can use and to deal with networking
+and financial restrictions on equipment usage.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
