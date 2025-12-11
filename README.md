@@ -140,7 +140,16 @@ This is an example of how to list things you need to use the software and how to
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+This project is intended to turn any computer into an edge camera device with higher time syncronization over large networks than just a standard RTSP based stream.
+
+### Example Scenario:
+
+RTSP streaming in MVI Edge exhibits poor time synchronization between the photo capture request and the actual frame capture in real time. This issue is particularly problematic for time-sensitive applications, such as processes that wait for inspection completion or involve moving objects.
+To address this, consider one of the following alternatives:
+
+Connect the RTSP camera directly to a single-board computer (e.g., Raspberry Pi) or use a different camera interface, such as CSI or USB. (There are plans to add GigE support though this seems overkill for this application)
+
+These options allow connection to your MVI Edge instance with continuous frame capture. The system will wait for a message on a designated MQTT trigger topic of your choice. Upon receiving the message, a frame is captured and uploaded to your specified image folder for inspection.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
@@ -192,7 +201,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the project_license. See `LICENSE` for more information.
+Distributed under the MIT License. See `LICENSE` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
