@@ -1,4 +1,4 @@
-*.yaml
+camera_edge_config.yaml
 *.crt
 # Byte-compiled / optimized / DLL files
 __pycache__/

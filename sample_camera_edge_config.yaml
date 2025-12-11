@@ -1,0 +1,22 @@
+#MVI Config
+mvi-edge-endpoint: "ExampleDomain:443/api/v1" #MVI Edge Endpoint
+mvi-username: "your_username"
+mvi-password: "your_password"
+'mvi-device-uuid': "your_target_MVI_device_UUID" #Device UUID found in MVI Portal
+
+
+#MQTT Config
+mqtt-broker: "BrockerDomain" #Could be the same as MVI edge domain if you are using on board broaker
+mqtt-port: 8883 #Use 8883 for TLS, 1883 for non-TLS
+mqtt-tls-required: True
+mqtt-tls-file-name: "yourcertificatefile.crt"
+mqtt-trigger-topic: "Your/Trigger/Topic"
+
+#Camera Config
+camera-type: "USB" #RTSP, USB, or PICAM
+camera-ip: "" #Must Include the rtsp:// prefix for RTSP cameras and the full stream path
+camera-width: "1920" 
+camera-height: "1080"
+
+#General
+host-platform: "WINDOWS" #Valid options are WINDOWS, LINUX, or RPI
