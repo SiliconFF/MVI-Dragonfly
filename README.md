@@ -35,7 +35,7 @@
     <img src="images/logo.png" alt="Logo" width="200" height="200">
   </a>
 
-<h3 align="center">MVI Butterfly</h3>
+<h3 align="center">MVI Dragonfly</h3>
 
   <p align="center">
     Turn any computer into a lightweight edge camera that can upload directly to an MVI Edge device 
