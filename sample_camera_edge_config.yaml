@@ -2,7 +2,7 @@
 mvi-edge-endpoint: "ExampleDomain:443/api/v1" #MVI Edge Endpoint
 mvi-username: "your_username"
 mvi-password: "your_password"
-'mvi-device-uuid': "your_target_MVI_device_UUID" #Device UUID found in MVI Portal
+mvi-device-uuid: "your_target_MVI_device_UUID" #Device UUID found in MVI Portal
 
 
 #MQTT Config
