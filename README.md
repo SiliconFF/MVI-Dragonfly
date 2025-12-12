@@ -91,7 +91,7 @@ MVI-Dragonfly is an independent open-source project and is not affiliated with, 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<!--![Product Name Screen Shot][product-screenshot]](https://example.com)-->
 
 For some backstory on this project. I have been implementing applications in assembly processes that use IBM MVI Edge to run quality inspection and object detection models. 
 The single biggest hurdle that was encountered was the syncronizaiton of the time of trigger and the time of the RTSP frame that was captured. To more clearly layout the issue 
