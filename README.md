@@ -94,8 +94,8 @@ MVI-Dragonfly is an independent open-source project and is not affiliated with, 
 <!--![Product Name Screen Shot][product-screenshot]](https://example.com)-->
 
 For some backstory on this project. I have been implementing applications in assembly processes that use IBM MVI Edge to run quality inspection and object detection models. 
-The single biggest hurdle that was encountered was the syncronizaiton of the time of trigger and the time of the RTSP frame that was captured. To more clearly layout the issue 
-that was encounted please see the chart below:
+The single biggest hurdle that was encountered was the synchronization of the time of trigger and the time of the RTSP frame that was captured. To more clearly layout the issue 
+that was encountered please see the chart below:
 
 <img width="751" height="433" alt="rtspjitter" src="https://github.com/user-attachments/assets/634871c1-31af-4742-a2d5-4156c6700218" />  
 <br><br/>
@@ -111,15 +111,30 @@ This issue gave me the idea to implement an interface to upload photos taken on 
 ### Built With
 
 * [![Python][Python]][Python-url]
+* OpenCV
+* Paho MQTT
+* Requests
+* PyYAML
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
+## Quick Start
+If you just want to go straight to running the script this is just the steps to deploy
+```bash
+git clone https://github.com/SiliconFF/EdgeCamera_MVIUpload.git
+cd EdgeCamera_MVIUpload
+python -m venv venv && source venv/bin/activate   # or .\venv\Scripts\activate on Windows
+pip install -r requirements.txt
+cp sample_camera_edge_config.yaml camera_edge_config.yaml
+# edit config to match your settings and include the certificates in the working directory if required
+python uploader.py
+```
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
 Below are the steps needed to deploy and run MVI-Dragonfly with any device
+
 
 ### Prerequisites
 
@@ -192,7 +207,7 @@ This program is built entirely on Python3.9 and it is recommended that you creat
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Once you have completed the prerequuisites and installation steps you simply have to plug in your camera and with your virtual env active run the following in the root directory:
+Once you have completed the prerequisites and installation steps you simply have to plug in your camera and with your virtual env active run the following in the root directory:
 
 ```sh
 python .\uploader.py
