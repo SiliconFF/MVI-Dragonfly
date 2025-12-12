@@ -95,13 +95,14 @@ MVI-Dragonfly is an independent open-source project and is not affiliated with, 
 
 For some backstory on this project. I have been implementing applications in assembly processes that use IBM MVI Edge to run quality inspection and object detection models. 
 The single biggest hurdle that was encountered was the syncronizaiton of the time of trigger and the time of the RTSP frame that was captured. To more clearly layout the issue 
-that was encounted please see the flow chart below:
+that was encounted please see the chart below:
 
-[Chart to be added later]
-
-
-This issue gave me the idea to implement an interface to upload photos taken on an edge device (like a raspberrypi) connected to the camera to "Image Folder" devices on the MVI Edge. With this implmentation the compute overhead in the MVI server is reduced and has been tested to vastly improve the time sync from sometimes being off by upwards of 4s to being within ~200ms. The main design goal is to give the integrators of MVI Edge more flexibility with what cameras they can use and to deal with networking
-and financial restrictions on equipment usage.
+<img width="751" height="433" alt="rtspjitter" src="https://github.com/user-attachments/assets/634871c1-31af-4742-a2d5-4156c6700218" />  
+<br><br/>
+This chart shows the jitter of time difference between the rtsp timeline and the realworld timeline which when triggering MVI-Edge will cause there to be a discrepency. While there are tools in the MVI-Edge capture settings 
+such as visual trigger and trigger orchestrations these are mostly bandaids for the greater issue.
+<br><br/>
+This issue gave me the idea to implement an interface to upload photos taken on an edge device (like a raspberrypi) connected to the camera to "Image Folder" devices on the MVI Edge. With this implmentation the compute overhead in the MVI server is reduced and has been tested to vastly improve the time sync from sometimes being off by upwards of 4s to being within ~200ms. The main design goal is to give the integrators of MVI Edge more flexibility with what cameras they can use and to deal with networking and financial restrictions on equipment usage.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
