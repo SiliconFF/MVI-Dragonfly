@@ -114,6 +114,7 @@ This issue gave me the idea to implement an interface to upload photos taken on 
 * [<img src="https://raw.githubusercontent.com/opencv/opencv/master/doc/opencv-logo-small.png" alt="OpenCV" height="40"/>](https://github.com/opencv/opencv) **OpenCV** 
 * [**Paho MQTT**](https://github.com/eclipse-paho/paho.mqtt.python)
 * [<img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/yaml.svg" alt="PyYAML" height="40" align="center"/>](https://github.com/yaml/pyyaml) **PyYAML**
+* [<img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/numpy.svg" alt="numpy" height="40" alight="center"/>](https://github.com/numpy/numpy) **numpy**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
