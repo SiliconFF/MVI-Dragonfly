@@ -233,7 +233,7 @@ See the [open issues](https://github.com/SiliconFF/EdgeCamera_MVIUpload/issues) 
 
 ## Acknowledgements
 
-Thanks to IBM for the Maximo Visual Inspection Edge API that powers this project. [Access you MVI-Edge Swagger](https://www.ibm.com/docs/en/masv-and-l/maximo-vi/cd?topic=o-rest-apis) Page to learn more
+Thanks to IBM for the Maximo Visual Inspection Edge API that powers this project. [Access your MVI-Edge Swagger](https://www.ibm.com/docs/en/masv-and-l/maximo-vi/cd?topic=o-rest-apis) Page to learn more
 This project is unofficial and not endorsed by IBM.
 
 <!-- CONTRIBUTING -->
