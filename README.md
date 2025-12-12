@@ -168,15 +168,15 @@ This program is built entirely on Python3.9. If you are attempting to use a CSI 
     ```
   **Then activate the virtual environment:**
   
-    _Windows_
-    ```sh
-    .\[your_virtual_env_name]\Scripts\activate
-    ```
-    
-    _Linux/RPI_
-    ```sh
-    source ./[your_virtual_env_name]/bin/activate
-    ```
+  _Windows_
+  ```sh
+  .\[your_virtual_env_name]\Scripts\activate
+  ```
+  
+  _Linux/RPI_
+  ```sh
+  source ./[your_virtual_env_name]/bin/activate
+  ```
 5. Install the required packages
    ```sh
    pip install -r requirements_[your host type].txt #requirements_RPI.txt or requirements_Windows_or_Linux.txt
