@@ -43,7 +43,7 @@
     <a href="https://github.com/SiliconFF/EdgeCamera_MVIUpload"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/SiliconFF/EdgeCamera_MVIUpload">View Demo</a>
+    <!--<a href="https://github.com/SiliconFF/EdgeCamera_MVIUpload">View Demo</a>-->
     &middot;
     <a href="https://github.com/SiliconFF/EdgeCamera_MVIUpload/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     &middot;
@@ -94,8 +94,8 @@ MVI-Dragonfly is an independent open-source project and is not affiliated with, 
 <!--![Product Name Screen Shot][product-screenshot]](https://example.com)-->
 
 For some backstory on this project. I have been implementing applications in assembly processes that use IBM MVI Edge to run quality inspection and object detection models. 
-The single biggest hurdle that was encountered was the syncronizaiton of the time of trigger and the time of the RTSP frame that was captured. To more clearly layout the issue 
-that was encounted please see the chart below:
+The single biggest hurdle that was encountered was the synchronization of the time of trigger and the time of the RTSP frame that was captured. To more clearly layout the issue 
+that was encountered please see the chart below:
 
 <img width="751" height="433" alt="rtspjitter" src="https://github.com/user-attachments/assets/634871c1-31af-4742-a2d5-4156c6700218" />  
 <br><br/>
@@ -111,25 +111,63 @@ This issue gave me the idea to implement an interface to upload photos taken on 
 ### Built With
 
 * [![Python][Python]][Python-url]
+* [<img src="https://raw.githubusercontent.com/opencv/opencv/master/doc/opencv-logo-small.png" alt="OpenCV" height="40"/>](https://github.com/opencv/opencv) **OpenCV** 
+* [**Paho MQTT**](https://github.com/eclipse-paho/paho.mqtt.python)
+* [<img src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/yaml.svg" alt="PyYAML" height="40" align="center"/>](https://github.com/yaml/pyyaml) **PyYAML**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
+## Quick Start
+If you just want to go straight to running the script this is just the steps to deploy
+```bash
+git clone https://github.com/SiliconFF/MVI-Dragonfly.git
+cd MVI-Dragonfly
+python -m venv venv && source venv/bin/activate   # or .\venv\Scripts\activate on Windows
+pip install -r requirements_RPI.txt # or requirements_Windows_or_Linux.txt for instances that don't use CSI camera
+cp sample_camera_edge_config.yaml camera_edge_config.yaml
+# edit config to match your settings and include the certificates in the working directory if required
+python uploader.py
+```
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
 Below are the steps needed to deploy and run MVI-Dragonfly with any device
 
+
 ### Prerequisites
 
-This program is built entirely on Python3.9 and it is recommended that you create a virtual environment
+This program is built entirely on Python3.9. If you are attempting to use a CSI camera on RPI you must install the following before installing the requirements:
 
   ```sh
-  python -m venv [your_virtual_env_name]
+  # Update package list
+  sudo apt update
+  
+  # Install libcap development headers
+  sudo apt install libcap-dev
+  
+  # Also install other common build dependencies for Python packages
+  sudo apt install build-essential python3-dev
   ```
-**Then activate the virtual environment:**
 
+
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/SiliconFF/MVI-Dragonfly.git
+   ```
+2. Navigate to the new directory
+   ```sh
+   cd ./MVI-Dragonfly
+   ```
+3. Create a virutal environment
+   ```sh
+    python -m venv [your_virtual_env_name]
+    ```
+  **Then activate the virtual environment:**
+  
   _Windows_
   ```sh
   .\[your_virtual_env_name]\Scripts\activate
@@ -139,24 +177,11 @@ This program is built entirely on Python3.9 and it is recommended that you creat
   ```sh
   source ./[your_virtual_env_name]/bin/activate
   ```
-
-
-
-### Installation
-
-1. Clone the repo
+5. Install the required packages
    ```sh
-   git clone https://github.com/SiliconFF/EdgeCamera_MVIUpload.git
+   pip install -r requirements_[your host type].txt #requirements_RPI.txt or requirements_Windows_or_Linux.txt
    ```
-2. Navigate to the new directory
-   ```sh
-   cd ./EdgeCamera_MVIUpload
-   ```
-3. Install the required packages
-   ```sh
-   pip install -r requirements.txt
-   ```
-4. Configure your camera_edge_config.yaml (this file must be named identically and in the same directory as uploader.py)    
+6. Configure your camera_edge_config.yaml (this file must be named identically and in the same directory as uploader.py)    
 
   There is a sample yaml available ([sample_camera_edge_config.yaml](https://github.com/SiliconFF/EdgeCamera_MVIUpload/blob/main/sample_camera_edge_config.yaml))
   
@@ -192,7 +217,7 @@ This program is built entirely on Python3.9 and it is recommended that you creat
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Once you have completed the prerequuisites and installation steps you simply have to plug in your camera and with your virtual env active run the following in the root directory:
+Once you have completed the prerequisites and installation steps you simply have to plug in your camera and with your virtual env active run the following in the root directory:
 
 ```sh
 python .\uploader.py
@@ -233,14 +258,11 @@ See the [open issues](https://github.com/SiliconFF/EdgeCamera_MVIUpload/issues) 
 
 ## Acknowledgements
 
-Thanks to IBM for the Maximo Visual Inspection Edge API that powers this project. [Access you MVI-Edge Swagger](https://www.ibm.com/docs/en/masv-and-l/maximo-vi/cd?topic=o-rest-apis) Page to learn more
+Thanks to IBM for the Maximo Visual Inspection Edge API that powers this project. [Access your MVI-Edge Swagger](https://www.ibm.com/docs/en/masv-and-l/maximo-vi/cd?topic=o-rest-apis) Page to learn more
 This project is unofficial and not endorsed by IBM.
 
 <!-- CONTRIBUTING -->
 ## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star! Thanks again!
 
@@ -263,7 +285,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See [`LICENSE`]([license-url]) for more information.
+Distributed under the MIT License. See [`LICENSE`][license-url] for more information.
 
 
 <!-- CONTACT -->
