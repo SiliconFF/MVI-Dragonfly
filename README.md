@@ -121,8 +121,8 @@ This issue gave me the idea to implement an interface to upload photos taken on 
 ## Quick Start
 If you just want to go straight to running the script this is just the steps to deploy
 ```bash
-git clone https://github.com/SiliconFF/EdgeCamera_MVIUpload.git
-cd EdgeCamera_MVIUpload
+git clone https://github.com/SiliconFF/MVI-Dragonfly.git
+cd MVI-Dragonfly
 python -m venv venv && source venv/bin/activate   # or .\venv\Scripts\activate on Windows
 pip install -r requirements.txt
 cp sample_camera_edge_config.yaml camera_edge_config.yaml
@@ -161,11 +161,11 @@ This program is built entirely on Python3.9 and it is recommended that you creat
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/SiliconFF/EdgeCamera_MVIUpload.git
+   git clone https://github.com/SiliconFF/MVI-Dragonfly.git
    ```
 2. Navigate to the new directory
    ```sh
-   cd ./EdgeCamera_MVIUpload
+   cd ./MVI-Dragonfly
    ```
 3. Install the required packages
    ```sh
