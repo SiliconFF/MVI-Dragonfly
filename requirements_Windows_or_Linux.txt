@@ -1,4 +1,4 @@
-numpy>2
+numpy<2
 opencv_contrib_python
 opencv_python
 opencv_python_headless
