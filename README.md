@@ -27,7 +27,6 @@
 
 
 
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -80,10 +79,14 @@
   </ol>
 </details>
 
+
+
 ## Disclaimer
 *MVI is a trademark of International Business Machines Corporation.*
 
 MVI-Dragonfly is an independent open-source project and is not affiliated with, endorsed by, or supported by IBM.
+
+
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -101,6 +104,7 @@ This issue gave me the idea to implement an interface to upload photos taken on 
 and financial restrictions on equipment usage.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 
 ### Built With
@@ -123,17 +127,17 @@ This program is built entirely on Python3.9 and it is recommended that you creat
   ```sh
   python -m venv [your_virtual_env_name]
   ```
-Then activate the virtual environment:
+**Then activate the virtual environment:**
 
-_Windows_
-```sh
-.\[your_virtual_env_name]\Scripts\activate
-```
-
-_Linux/RPI_
-```sh
-source ./[your_virtual_env_name]/bin/activate
-```
+  _Windows_
+  ```sh
+  .\[your_virtual_env_name]\Scripts\activate
+  ```
+  
+  _Linux/RPI_
+  ```sh
+  source ./[your_virtual_env_name]/bin/activate
+  ```
 
 
 
@@ -187,7 +191,17 @@ source ./[your_virtual_env_name]/bin/activate
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-This project is intended to turn any computer into an edge camera device with higher time syncronization over large networks than just a standard RTSP based stream.
+Once you have completed the prerequuisites and installation steps you simply have to plug in your camera and with your virtual env active run the following in the root directory:
+
+```sh
+python .\uploader.py
+```
+
+The system will immediately validate your config settings and attempt to connect to your MVI-Edge, MQTT broker, and camera. Operational logs can be found in the automatically generated `uploader.log` in the root directory
+
+**_It is highly recommended to set the script to run on startup which the steps vary depending on your environment_**
+
+
 
 ### Example Scenario:
 
@@ -218,7 +232,7 @@ See the [open issues](https://github.com/SiliconFF/EdgeCamera_MVIUpload/issues) 
 
 ## Acknowledgements
 
-Thanks to IBM for the Maximo Visual Inspection Edge API that powers this project.  
+Thanks to IBM for the Maximo Visual Inspection Edge API that powers this project. [Access you MVI-Edge Swagger](https://www.ibm.com/docs/en/masv-and-l/maximo-vi/cd?topic=o-rest-apis) Page to learn more
 This project is unofficial and not endorsed by IBM.
 
 <!-- CONTRIBUTING -->
@@ -253,7 +267,6 @@ Distributed under the MIT License. See [`LICENSE`]([license-url]) for more infor
 
 <!-- CONTACT -->
 ## Contact
-
 Collin Finetti - finetticj@gmail.com
 
 Project Link: [https://github.com/SiliconFF/EdgeCamera_MVIUpload](https://github.com/SiliconFF/EdgeCamera_MVIUpload)
