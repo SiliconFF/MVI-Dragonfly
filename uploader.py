@@ -139,8 +139,23 @@ keep_alive_interval = int(config.get('keep-alive-interval', 300))
 mvi_ca_cert = config.get('mvi-ca-cert', None)
 verify_ssl = mvi_ca_cert if mvi_ca_cert else False
 
+# Camera Config for JPEG (on-demand single snapshot)
+if camera_type == 'JPEG':
+    camera_jpeg_endpoint = config.get('camera-jpeg-endpoint', '').strip()
+    camera_jpeg_username = os.environ.get('JPEG_USERNAME', config.get('camera-jpeg-username', '').strip())
+    camera_jpeg_password = os.environ.get('JPEG_PASSWORD', config.get('camera-jpeg-password', '').strip())
+    camera_jpeg_protocol = config.get('camera-jpeg-protocol', 'http').lower()
+    if camera_jpeg_protocol not in ['http', 'https']:
+        logger.error("Invalid camera-jpeg-protocol (must be 'http' or 'https')")
+        sys.exit(1)
+else:
+    camera_jpeg_endpoint = None
+    camera_jpeg_username = None
+    camera_jpeg_password = None
+    camera_jpeg_protocol = None
+
 # Validate camera type
-allowed_types = ['USB', 'RTSP']
+allowed_types = ['USB', 'RTSP', 'JPEG']
 if host_platform == 'RPI' and PICAMERA_AVAILABLE:
     allowed_types.append('PICAM')
 
@@ -154,6 +169,11 @@ if camera_type == 'RTSP':
         sys.exit(1)
     if not camera_ip.startswith('rtsp://'):
         camera_ip = f'rtsp://{camera_ip}'
+
+if camera_type == 'JPEG':
+    if not camera_jpeg_endpoint:
+        logger.error("JPEG selected but no camera-jpeg-endpoint provided")
+        sys.exit(1)
 
 # --------------------- Authentication ---------------------
 session_url = f"https://{mvi_endpoint_base}/users/sessions"
@@ -193,13 +213,15 @@ def find_working_camera(max_index=10, timeout_sec=2.0):
     logger.error("No working USB camera found")
     return None
 
-# Determine source
+# Determine source (only for streaming types)
 if camera_type == 'USB':
     video_src = camera_device if camera_device is not None else find_working_camera()
     if video_src is None:
         sys.exit(1)
 elif camera_type == 'RTSP':
     video_src = camera_ip
+elif camera_type == 'JPEG':
+    video_src = None  # No streaming source needed
 else:  # PICAM
     video_src = None
 
@@ -213,10 +235,35 @@ def upload_frame_in_memory(frame, destination):
     headers = {"mvie-controller": token, "accept": "application/json"}
     files = {"file": ("captured_frame.png", img_io, "image/png")}
     response = requests.post(destination, headers=headers, files=files, verify=verify_ssl)
-    response.raise_for_status()
+    response.raise_for_status() 
     logger.info("Frame uploaded successfully")
 
-# --------------------- FrameGrabber Class ---------------------
+# --------------------- On-demand JPEG fetch ---------------------
+def fetch_jpeg_frame():
+    """Fetch a single JPEG snapshot from the configured endpoint."""
+    url = f"{camera_jpeg_protocol}://{camera_jpeg_endpoint}"
+    auth = HTTPDigestAuth = requests.auth.HTTPDigestAuth(camera_jpeg_username, camera_jpeg_password)
+    logger.info(f"Fetching single JPEG snapshot from {url}")
+    try:
+
+        response = requests.get(url, timeout=15, auth=auth)
+        response.raise_for_status()
+        
+        img_array = np.frombuffer(response.content, dtype=np.uint8)
+        frame = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
+        
+        if frame is None:
+            logger.warning("Failed to decode JPEG image from response")
+            return None
+            
+        logger.info(f"JPEG frame fetched successfully - shape: {frame.shape}")
+        return frame
+        
+    except Exception as e:
+        logger.error(f"Failed to fetch or decode JPEG frame: {e}")
+        return None
+
+# --------------------- FrameGrabber Class (only for streaming types) ---------------------
 class FrameGrabber:
     def __init__(self, src, width, height, camera_type):
         self.camera_type = camera_type
@@ -248,7 +295,10 @@ class FrameGrabber:
             self.picam.start()
             logger.info(f"PiCamera initialized at {width}x{height}")
         else:
-            backend = OPENCV_BACKEND if self.camera_type == 'USB' else cv2.CAP_ANY
+            if self.camera_type == 'RTSP':
+                backend = cv2.CAP_FFMPEG
+            else:
+                backend = OPENCV_BACKEND
             self.cap = cv2.VideoCapture(src, backend)
             if not self.cap.isOpened():
                 raise IOError(f"Failed to open video source: {src}")
@@ -322,8 +372,13 @@ class FrameGrabber:
             if hasattr(self, 'cap'):
                 self.cap.release()
 
-grabber = FrameGrabber(video_src, camera_width, camera_height, camera_type)
-logger.info(f"Using {camera_type} camera at {camera_width}x{camera_height}")
+# Initialize grabber only if needed (not for JPEG on-demand)
+if camera_type != 'JPEG':
+    grabber = FrameGrabber(video_src, camera_width, camera_height, camera_type)
+    logger.info(f"Using {camera_type} streaming camera at {camera_width}x{camera_height}")
+else:
+    grabber = None
+    logger.info("Using JPEG on-demand mode (single snapshot on trigger)")
 
 # --------------------- Image Processing ---------------------
 def brighten_frame(frame, gamma):
@@ -331,10 +386,9 @@ def brighten_frame(frame, gamma):
     table = np.array([((i / 255.0) ** inv_gamma) * 255 for i in np.arange(256)]).astype("uint8")
     return cv2.LUT(frame, table)
 
-# --------------------- New: Dedicated Recovery Function ---------------------
+# --------------------- Recovery Function (for streaming types only) ---------------------
 @tenacity.retry(stop=tenacity.stop_after_attempt(5), wait=tenacity.wait_exponential(multiplier=1, min=2, max=10), reraise=True)
 def recover_camera_connection():
-    """Restart the FrameGrabber to recover camera connection. No capture/upload."""
     global grabber
     logger.info("Recovering camera connection by restarting grabber...")
     grabber.stop()
@@ -342,12 +396,8 @@ def recover_camera_connection():
     grabber = FrameGrabber(video_src, camera_width, camera_height, camera_type)
     logger.info("Camera connection recovered successfully")
 
-# --------------------- New: Clean Frame Capture Function ---------------------
+# --------------------- Clean Frame Capture (for streaming types) ---------------------
 def capture_frame():
-    """
-    Get a valid frame. If none available, attempt recovery first.
-    Returns frame or None on failure.
-    """
     frame = grabber.get_latest_frame()
     if frame is not None:
         return frame
@@ -355,7 +405,7 @@ def capture_frame():
     logger.warning("No fresh frame available - attempting recovery...")
     try:
         recover_camera_connection()
-        time.sleep(0.5)  # Allow new grabber to produce frames
+        time.sleep(0.5)
         frame = grabber.get_latest_frame()
         if frame is None:
             logger.error("Recovery succeeded but no valid frame yet")
@@ -365,17 +415,23 @@ def capture_frame():
         logger.error(f"Camera recovery failed after retries: {e}")
         return None
 
-# --------------------- Updated: Capture and Upload (MQTT Trigger Only) ---------------------
+# --------------------- Capture and Upload (handles both modes) ---------------------
 def capture_and_upload():
-    frame = capture_frame()
-    if frame is None:
-        logger.error("Failed to obtain a valid frame - skipping upload")
-        return
+    if camera_type == 'JPEG':
+        frame = fetch_jpeg_frame()
+        if frame is None:
+            logger.error("Failed to fetch valid JPEG snapshot - skipping upload")
+            return
+    else:
+        frame = capture_frame()
+        if frame is None:
+            logger.error("Failed to obtain a valid frame - skipping upload")
+            return
     
     # Optional gamma correction
     # frame = brighten_frame(frame, gamma)
     
-    logger.info(f"Frame captured - shape: {frame.shape}")
+    logger.info(f"Frame ready for upload - shape: {frame.shape}")
     try:
         upload_frame_in_memory(frame, device_endpoint)
     except Exception as e:
@@ -470,14 +526,15 @@ def shutdown_handler(signum, frame):
     logger.info("Shutdown signal received - stopping gracefully...")
     if observer:
         observer.stop()
-    grabber.stop()
+    if grabber:
+        grabber.stop()
     logger.info("Shutdown complete")
     sys.exit(0)
 
 signal.signal(signal.SIGINT, shutdown_handler)
 signal.signal(signal.SIGTERM, shutdown_handler)
 
-# --------------------- Main Loop (Health Check - Recovery Only) ---------------------
+# --------------------- Main Loop (Health Check - only for streaming types) ---------------------
 logger.info("All components initialized. Waiting for MQTT triggers...")
 last_health_check = time.time()
 health_check_interval = 30  # seconds
@@ -485,11 +542,12 @@ health_check_interval = 30  # seconds
 while True:
     time.sleep(1)
     if time.time() - last_health_check > health_check_interval:
-        frame = grabber.get_latest_frame()
-        if frame is None:
-            logger.info("Periodic health check failed - recovering camera (no upload)")
-            try:
-                recover_camera_connection()
-            except Exception as e:
-                logger.error(f"Health check recovery failed: {e}")
+        if camera_type != 'JPEG' and grabber:
+            frame = grabber.get_latest_frame()
+            if frame is None:
+                logger.info("Periodic health check failed - recovering camera (no upload)")
+                try:
+                    recover_camera_connection()
+                except Exception as e:
+                    logger.error(f"Health check recovery failed: {e}")
         last_health_check = time.time()
